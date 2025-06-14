@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #56ab2f, #56ab2f);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 35px 25px;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        h1 {
+            text-align: center;
+            color: #145A32;
+            text-shadow: 1px 1px 2px #fff;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            border-color: #27ae60;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #27ae60;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #1e8449;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #27ae60;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 25px 20px;
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            input, button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form onsubmit="return loginUser(event)">
+            <div class="form-group">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p>Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+    </div>
+
+    <script>
+        function loginUser(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const user = JSON.parse(localStorage.getItem(email));
+            if (user && user.password === password) {
+                localStorage.setItem("loggedInUser", email);
+                alert('Login berhasil!');
+                window.location.href = 'index.html';
+            } else {
+                alert('Email atau password salah!');
+            }
+        }
+    </script>
+</body>
+</html>

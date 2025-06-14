@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemesanan Tiket - 1 Dekade Ultras</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: linear-gradient(135deg, #56ab2f, #56ab2f);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.95);
+      width: 100%;
+      max-width: 600px;
+      min-height: 100vh;
+      padding: 35px 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    h1 {
+      text-align: center;
+      color: #145A32;
+      text-shadow: 1px 1px 2px #fff;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    p#welcomeMsg {
+      text-align: center;
+      font-weight: bold;
+      color: #2e7d32;
+      margin-bottom: 20px;
+    }
+
+    .presale-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .presale-card {
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .presale-card:hover {
+      background: #e2f0dc;
+      transform: scale(1.02);
+    }
+
+    .presale-card img {
+      width: 100%;
+      max-height: 120px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    input:focus {
+      border-color: #27ae60;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #1e8449;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    #bookingForm {
+      display: none;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 25px 20px;
+        min-height: 100vh;
+      }
+
+      .presale-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>PEMESANAN TIKET 1 DEKADE ULTRAS MAN MODEL</h1>
+    <p id="welcomeMsg"></p>
+
+    <div id="presaleSelection">
+      <p style="text-align:center; font-weight:bold;">Pilih Kategori Pre Sale</p>
+      <div class="presale-buttons">
+        <div class="presale-card" onclick="selectPresale('Pre Sale 1')">
+          <img src="ticket1.png" alt="Tiket Pre Sale 1">
+          <span>Pre Sale 1 Rp 45.000</span>
+        </div>
+        <div class="presale-card" onclick="selectPresale('Pre Sale 2')">
+          <img src="ticket2.png" alt="Tiket Pre Sale 2">
+          <span>Pre Sale 2 Rp 65.000</span>
+        </div>
+        <div class="presale-card" onclick="selectPresale('Pre Sale 3')">
+          <img src="ticket3.png" alt="Tiket Pre Sale 3">
+          <span>Pre Sale 3 Rp 75.000</span>
+        </div>
+      </div>
+    </div>
+
+    <form id="bookingForm">
+      <input type="hidden" id="presale" name="presale">
+      <div class="form-group">
+        <label for="nama">Nama Lengkap</label>
+        <input type="text" id="nama" name="nama" readonly>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" readonly>
+      </div>
+      <div class="form-group">
+        <label for="nik">No. KTP</label>
+        <input type="text" id="nik" name="nik" maxlength="16" pattern="^\d{16}$" required placeholder="16 digit angka">
+      </div>
+      <div class="form-group">
+        <label for="telepon">No. Telepon</label>
+        <input type="tel" id="telepon" name="telepon" pattern="^08\d{9,11}$" required placeholder="Contoh: 081234567890">
+      </div>
+
+      <div class="btn-row">
+        <button type="submit">Pesan Tiket</button>
+        <button type="button" onclick="logout()">Logout</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const loggedInEmail = localStorage.getItem("loggedInUser");
+    if (!loggedInEmail) {
+      alert("Silakan login terlebih dahulu.");
+      window.location.href = "login.html";
+    } else {
+      const user = JSON.parse(localStorage.getItem(loggedInEmail));
+      if (!user || !user.name) {
+        alert("Data pengguna tidak ditemukan.");
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+      } else {
+        document.getElementById("email").value = loggedInEmail;
+        document.getElementById("nama").value = user.name;
+        document.getElementById("welcomeMsg").textContent = `Halo, ${user.name}!`;
+      }
+    }
+
+    function selectPresale(type) {
+      document.getElementById("presale").value = type;
+      document.getElementById("presaleSelection").style.display = "none";
+      document.getElementById("bookingForm").style.display = "block";
+    }
+
+    document.getElementById("bookingForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const nik = document.getElementById("nik").value;
+      const telepon = document.getElementById("telepon").value;
+
+      if (!/^\d{16}$/.test(nik)) {
+        alert("NIK harus terdiri dari 16 digit angka.");
+        return;
+      }
+
+      if (!/^08\d{9,11}$/.test(telepon)) {
+        alert("Nomor telepon harus dimulai dengan 08 dan panjang 11-13 digit.");
+        return;
+      }
+
+      const data = {
+        nama: document.getElementById("nama").value,
+        email: document.getElementById("email").value,
+        nik,
+        telepon,
+        presale: document.getElementById("presale").value,
+        waktu: new Date().toLocaleString(),
+        kodeBooking: "BOOK-" + Math.floor(100000 + Math.random() * 900000)
+      };
+
+      localStorage.setItem("lastOrder", JSON.stringify(data));
+      window.location.href = "informasi-tiket.html";
+    });
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      alert("Logout berhasil.");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

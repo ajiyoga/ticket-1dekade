@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title></title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    body {
+      background: linear-gradient(135deg, #56ab2f, #56ab2f);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+    }
+
+    .voucher {
+      background-color: rgba(255, 255, 255, 0.95);
+      width: 100%;
+      max-width: 700px;
+      max-height: 95vh;
+      overflow-y: auto;
+      padding: 30px 25px;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #145A32;
+      padding-bottom: 12px;
+      margin-bottom: 25px;
+    }
+
+    .header h2 {
+      color: #145A32;
+      margin-bottom: 8px;
+    }
+
+    .booking-number {
+      font-weight: bold;
+      color: #27ae60;
+      font-size: 18px;
+    }
+
+    .poster {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .poster img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .info-strip {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      background-color: #27ae60;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 16px 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    .section h3 {
+      margin-top: 0;
+      color: #145A32;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    td {
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    td:first-child {
+      background-color: #ecfdf1;
+      font-weight: bold;
+      width: 35%;
+    }
+
+    .print-button {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .print-button button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .print-button button:hover {
+      background: #1e8449;
+    }
+
+    .whatsapp-confirm {
+      margin-top: 40px;
+    }
+
+    .whatsapp-box {
+      background: #ecfdf1;
+      border-left: 6px solid #25D366;
+      padding: 18px 20px;
+      border-radius: 10px;
+    }
+
+    .whatsapp-box h3 {
+      color: #25D366;
+      margin: 0 0 10px;
+    }
+
+    .whatsapp-box p {
+      margin: 0 0 12px;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .whatsapp-button {
+      display: inline-flex;
+      align-items: center;
+      background-color: #25D366;
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .whatsapp-button:hover {
+      background-color: #1ebe5d;
+    }
+
+    .whatsapp-button img {
+      height: 16px;
+      margin-right: 8px;
+    }
+
+    .lokasi-penukaran {
+      display: none;
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+        margin: 0;
+      }
+
+      .print-button,
+      .section.metode-pembayaran,
+      .whatsapp-confirm,
+      .info-strip {
+        display: none !important;
+      }
+
+      .voucher {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+      }
+
+      .poster img {
+        border: none;
+        border-radius: 0;
+      }
+
+      .lokasi-penukaran {
+        display: block !important;
+      }
+
+      @page {
+        margin: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .voucher {
+        padding: 20px 15px;
+      }
+
+      .poster img {
+        max-height: 200px;
+      }
+
+      .print-button button {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="voucher">
+    <div class="header">
+      <h2>1 DEKADE ULTRAS MAN MODEL</h2>
+      <p>Booking Number: <span class="booking-number" id="kodeBooking">-</span></p>
+    </div>
+
+    <div class="poster">
+      <img src="tiket.png" alt="Poster Tiket">
+    </div>
+
+    <div class="section">
+      <h3>Data Pemesan</h3>
+      <table>
+        <tr><td>Nama</td><td id="namaPemesan"></td></tr>
+        <tr><td>Email</td><td id="emailPemesan"></td></tr>
+        <tr><td>No. KTP</td><td id="nikPemesan"></td></tr>
+        <tr><td>No. Telepon</td><td id="teleponPemesan"></td></tr>
+        <tr><td>Kategori Tiket</td><td id="kategoriTiket"></td></tr>
+        <tr><td>Waktu Pemesanan</td><td id="waktuPesan"></td></tr>
+      </table>
+    </div>
+
+    <div class="section metode-pembayaran">
+      <h3>Metode Pembayaran</h3>
+      <table>
+        <tr><td>Bank</td><td>BCA</td></tr>
+        <tr><td>Nomor Rekening</td><td>8640910942</td></tr>
+        <tr><td>Nama Pemilik</td><td>MUHAMMAD AJI YOGA PRATAMA</td></tr>
+        <tr><td>Catatan</td><td>Mohon kirim bukti transfer dan bukti cetak tiket saat konfirmasi via WhatsApp</td></tr>
+      </table>
+    </div>
+
+    <div class="section lokasi-penukaran">
+      <h3>Lokasi Penukaran Tiket</h3>
+      <table>
+        <tr><td>Tempat</td><td>Warung Mak'e belakang pasar singonoyo</td></tr>
+        <tr><td>Waktu Penukaran</td><td>Senin - Minggu - Pukul 15:00 s/d 20:00 WIB</td></tr>
+        <tr><td>Catatan</td><td>Wajib membawa bukti cetak tiket dan bukti pembayaran</td></tr>
+      </table>
+    </div>
+
+    <div class="print-button">
+      <button onclick="window.print()">Cetak Tiket</button>
+    </div>
+
+    <div class="whatsapp-confirm">
+      <div class="whatsapp-box">
+        <h3>Konfirmasi via WhatsApp</h3>
+        <p>Klik tombol di bawah untuk mengirim konfirmasi pemesanan tiket ke panitia.</p>
+        <a class="whatsapp-button" id="waLink" href="#" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"> Kirim ke 0858-5509-4087
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const order = JSON.parse(localStorage.getItem("lastOrder"));
+    if (!order || !order.nik || !order.nama) {
+      alert("Data pesanan tidak ditemukan atau tidak lengkap.");
+      window.location.href = "index.html";
+    } else {
+      const kodeBooking = "BOOK" + order.nik.slice(-4);
+      document.getElementById("kodeBooking").textContent = kodeBooking;
+      document.getElementById("namaPemesan").textContent = order.nama;
+      document.getElementById("emailPemesan").textContent = order.email || '-';
+      document.getElementById("nikPemesan").textContent = order.nik;
+      document.getElementById("teleponPemesan").textContent = order.telepon || '-';
+      document.getElementById("kategoriTiket").textContent = order.presale || '-';
+      document.getElementById("waktuPesan").textContent = order.waktu || '-';
+
+      const text = `Halo, saya ingin konfirmasi tiket 1 Dekade Ultras Man Model dengan kode booking ${kodeBooking}. Nama saya ${order.nama}. Mohon informasi lebih lanjut.`;
+      const nomorWA = '6285855094087';
+      document.getElementById("waLink").href = `https://wa.me/${nomorWA}?text=${encodeURIComponent(text)}`;
+    }
+  </script>
+</body>
+</html>
